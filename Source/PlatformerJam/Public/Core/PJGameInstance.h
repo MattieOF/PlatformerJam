@@ -17,7 +17,7 @@ class PLATFORMERJAM_API UPJGameInstance : public UGameInstance
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (WorldContext = "WorldContextObject"))
-	FORCEINLINE UPJGameInstance* GetPJGameInstance(UObject* WorldContextObject)
+	static FORCEINLINE UPJGameInstance* GetPJGameInstance(UObject* WorldContextObject)
 	{
 		return Cast<UPJGameInstance>(UGameplayStatics::GetGameInstance(WorldContextObject));
 	}

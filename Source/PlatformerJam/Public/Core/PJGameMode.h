@@ -17,7 +17,7 @@ class PLATFORMERJAM_API APJGameMode : public AGameModeBase
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (WorldContext = "WorldContextObject"))
-	FORCEINLINE APJGameMode* GetPJGameMode(UObject* WorldContextObject)
+	static FORCEINLINE APJGameMode* GetPJGameMode(UObject* WorldContextObject)
 	{
 		return Cast<APJGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
 	}
