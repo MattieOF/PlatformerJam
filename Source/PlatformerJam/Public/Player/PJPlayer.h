@@ -18,14 +18,25 @@ class PLATFORMERJAM_API APJPlayer : public ACharacter
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
 	float BaseMoveSpeed = 200;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float MouseSens = 200;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
 	float MoveSpeedMultiplier = 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	float HorizontalMouseSens = 200;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	float VerticalMouseSens = 80;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	bool bInvertHorizontal = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	bool bInvertVertical = false;
+
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	FVector LeftCamOffset;
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	FVector RightCamOffset;
 	
 	// Sets default values for this character's properties
 	APJPlayer();
@@ -63,15 +74,20 @@ protected:
 	UInputAction* JumpAction;
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* MouseLookAction;
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* SwitchSideAction;
 
 	void OnMove(const FInputActionValue& ActionValue);
 	void OnJump(const FInputActionValue& ActionValue);
 	void OnMouseLook(const FInputActionValue& ActionValue);
+	void OnSwitchSide(const FInputActionValue& ActionValue);
+
+	bool bCamOnLeft = false;
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Camera")
 	USpringArmComponent* Boom;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Camera")
 	UCameraComponent* Camera;
 };
