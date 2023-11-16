@@ -40,6 +40,7 @@ APJPlayer::APJPlayer()
 // Called when the game starts or when spawned
 void APJPlayer::BeginPlay()
 {
+	NormalArmLength = Boom->TargetArmLength;
 	Super::BeginPlay();
 }
 
@@ -100,6 +101,24 @@ void APJPlayer::OnSwitchSide()
 	bCamOnLeft = !bCamOnLeft;
 }
 
+void APJPlayer::OnAim(const FInputActionValue& ActionValue)
+{
+	// Check our new state and return if we're already in it
+	const bool bIsButtonHeld = ActionValue.Get<bool>();
+	if (bIsAiming == bIsButtonHeld) return;
+
+	// Ensure aiming tween isn't currently active
+	if (AimingTween && AimingTween->bIsActive)
+		AimingTween->Destroy();
+
+	// Do aiming tween
+	AimingTween = FCTween::Play(Boom->TargetArmLength, bIsButtonHeld ? AimArmLength : NormalArmLength,
+	                            [this](float ArmLength) { Boom->TargetArmLength = ArmLength; }, 0.3f, EFCEase::OutExpo);
+	
+	// Set new state
+	bIsAiming = bIsButtonHeld;
+}
+
 // Called every frame
 void APJPlayer::Tick(float DeltaTime)
 {
@@ -117,5 +136,13 @@ void APJPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(JumpAction,       ETriggerEvent::Triggered, this, &APJPlayer::OnJump);
 		EnhancedInputComponent->BindAction(MouseLookAction,  ETriggerEvent::Triggered, this, &APJPlayer::OnMouseLook);
 		EnhancedInputComponent->BindAction(SwitchSideAction, ETriggerEvent::Triggered, this, &APJPlayer::OnSwitchSide);
+		EnhancedInputComponent->BindAction(AimAction,        ETriggerEvent::Triggered, this, &APJPlayer::OnAim);
 	}
+}
+
+void APJPlayer::SetNormalArmLength(float NewLength)
+{
+	NormalArmLength = NewLength;
+	if (!bIsAiming)
+		Boom->TargetArmLength = NewLength;
 }

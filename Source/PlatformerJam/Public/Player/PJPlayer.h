@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PJPlayer.generated.h"
 
+class FCTweenInstanceFloat;
 struct FInputActionValue;
 class UCameraComponent;
 class USpringArmComponent;
@@ -33,10 +34,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	bool bInvertVertical = false;
 
-	UPROPERTY(EditAnywhere, Category = "Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	FVector LeftCamOffset;
-	UPROPERTY(EditAnywhere, Category = "Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	FVector RightCamOffset;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Camera")
+	float NormalArmLength = 300;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	float AimArmLength = 80;
 	
 	// Sets default values for this character's properties
 	APJPlayer();
@@ -47,13 +53,19 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Camera")
 	FORCEINLINE USpringArmComponent* GetBoom() const { return Boom; }
 	
-	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Camera")
 	FORCEINLINE UCameraComponent* GetCamera() const { return Camera; }
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (WorldContext = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Camera")
+	void SetNormalArmLength(float NewLength);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Player")
+	FORCEINLINE bool IsAiming() const { return bIsAiming; }
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (WorldContext = "WorldContextObject"), Category = "Player")
 	static FORCEINLINE APJPlayer* GetPlayer(UObject* WorldContextObject)
 	{
 		return Cast<APJPlayer>(UGameplayStatics::GetPlayerPawn(WorldContextObject, 0));
@@ -76,17 +88,24 @@ protected:
 	UInputAction* MouseLookAction;
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* SwitchSideAction;
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* AimAction;
 
 	void OnMove(const FInputActionValue& ActionValue);
 	void OnJump();
 	void OnMouseLook(const FInputActionValue& ActionValue);
 	void OnSwitchSide();
+	void OnAim(const FInputActionValue& ActionValue);
 
 	bool bCamOnLeft = false;
+	bool bIsAiming = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	USpringArmComponent* Boom;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* Camera;
+
+private:
+	FCTweenInstanceFloat* AimingTween;
 };
