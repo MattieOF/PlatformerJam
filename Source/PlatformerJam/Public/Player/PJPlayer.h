@@ -78,16 +78,15 @@ protected:
 	UInputAction* SwitchSideAction;
 
 	void OnMove(const FInputActionValue& ActionValue);
-	void OnJump(const FInputActionValue& ActionValue);
+	void OnJump();
 	void OnMouseLook(const FInputActionValue& ActionValue);
-	void OnSwitchSide(const FInputActionValue& ActionValue);
+	void OnSwitchSide();
 
 	bool bCamOnLeft = false;
 
-private:
-	UPROPERTY(EditAnywhere, Category = "Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	USpringArmComponent* Boom;
 
-	UPROPERTY(EditAnywhere, Category = "Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* Camera;
 };

@@ -81,12 +81,9 @@ void APJPlayer::OnMove(const FInputActionValue& ActionValue)
 					 BaseMoveSpeed * MoveSpeedMultiplier * GetWorld()->DeltaTimeSeconds, false);
 }
 
-void APJPlayer::OnJump(const FInputActionValue& ActionValue)
+void APJPlayer::OnJump()
 {
-	if (ActionValue.Get<bool>())
-	{
-		Jump();
-	}
+	Jump();
 }
 
 void APJPlayer::OnMouseLook(const FInputActionValue& ActionValue)
@@ -96,14 +93,11 @@ void APJPlayer::OnMouseLook(const FInputActionValue& ActionValue)
 	AddControllerPitchInput(Input.Y * GetWorld()->DeltaTimeSeconds * VerticalMouseSens);
 }
 
-void APJPlayer::OnSwitchSide(const FInputActionValue& ActionValue)
+void APJPlayer::OnSwitchSide()
 {
-	if (ActionValue.Get<bool>())
-	{
-		FCTween::Play(Camera->GetRelativeLocation(), bCamOnLeft ? LeftCamOffset : RightCamOffset,
-		              [this](FVector Vector) { Camera->SetRelativeLocation(Vector); }, 0.3f, EFCEase::OutExpo);
-		bCamOnLeft = !bCamOnLeft;
-	}
+	FCTween::Play(Camera->GetRelativeLocation(), bCamOnLeft ? LeftCamOffset : RightCamOffset,
+	              [this](FVector Vector) { Camera->SetRelativeLocation(Vector); }, 0.3f, EFCEase::OutExpo);
+	bCamOnLeft = !bCamOnLeft;
 }
 
 // Called every frame
