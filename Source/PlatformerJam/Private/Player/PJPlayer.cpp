@@ -68,18 +68,20 @@ void APJPlayer::PossessedBy(AController* NewController)
 
 void APJPlayer::OnMove(const FInputActionValue& ActionValue)
 {
+	// Get and normalise movement input
 	FVector2D Input = ActionValue.Get<FVector2D>();
-	if (Input == FVector2D::ZeroVector) return;
-
+	// if (Input == FVector2D::ZeroVector) return; // Removed for now; func shouldn't be called if input is 0
 	Input = Input.GetSafeNormal();
-	FRotator LookYaw = FRotator(0, GetControlRotation().Yaw, 0);
 	
+	FRotator LookYaw = FRotator(0, GetControlRotation().Yaw, 0);
+
+	const float AimingSlowdownMultiplier = bIsAiming ? AimingMoveSpeedMultiplier : 1;
 	FVector LookDir = FRotationMatrix(LookYaw).GetUnitAxis(EAxis::X);
-	AddMovementInput(LookDir * Input.X * (bInvertHorizontal ? -1 : 1),
-	                 BaseMoveSpeed * MoveSpeedMultiplier * GetWorld()->DeltaTimeSeconds, false);
+	AddMovementInput(LookDir * (Input.X * (bInvertHorizontal ? -1 : 1)),
+	                 BaseMoveSpeed * MoveSpeedMultiplier * AimingSlowdownMultiplier * GetWorld()->DeltaTimeSeconds, false);
 	LookDir = FRotationMatrix(LookYaw).GetUnitAxis(EAxis::Y);
-	AddMovementInput(LookDir * Input.Y * (bInvertVertical ? -1 : 1),
-					 BaseMoveSpeed * MoveSpeedMultiplier * GetWorld()->DeltaTimeSeconds, false);
+	AddMovementInput(LookDir * (Input.Y * (bInvertVertical ? -1 : 1)),
+					 BaseMoveSpeed * MoveSpeedMultiplier * AimingSlowdownMultiplier * GetWorld()->DeltaTimeSeconds, false);
 }
 
 void APJPlayer::OnJump()
@@ -89,9 +91,10 @@ void APJPlayer::OnJump()
 
 void APJPlayer::OnMouseLook(const FInputActionValue& ActionValue)
 {
+	const float AimingSpeedMultiplier = bIsAiming ? AimingMouseSensMultiplier : 1;
 	const FVector2D Input = ActionValue.Get<FVector2D>();
-	AddControllerYawInput(Input.X * GetWorld()->DeltaTimeSeconds * HorizontalMouseSens);
-	AddControllerPitchInput(Input.Y * GetWorld()->DeltaTimeSeconds * VerticalMouseSens);
+	AddControllerYawInput(Input.X * GetWorld()->DeltaTimeSeconds * HorizontalMouseSens * AimingSpeedMultiplier);
+	AddControllerPitchInput(Input.Y * GetWorld()->DeltaTimeSeconds * VerticalMouseSens * AimingSpeedMultiplier);
 }
 
 void APJPlayer::OnSwitchSide()

@@ -21,7 +21,8 @@ class PLATFORMERJAM_API APJPlayer : public ACharacter
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
 	float BaseMoveSpeed = 200;
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	float AimingMoveSpeedMultiplier = 0.3f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
 	float MoveSpeedMultiplier = 1;
 
@@ -29,6 +30,8 @@ public:
 	float HorizontalMouseSens = 200;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	float VerticalMouseSens = 80;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	float AimingMouseSensMultiplier = 0.25f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	bool bInvertHorizontal = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
