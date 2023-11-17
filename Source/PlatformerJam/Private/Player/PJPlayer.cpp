@@ -9,6 +9,7 @@
 #include "PJLog.h"
 #include "PlayerMappableInputConfig.h"
 #include "Camera/CameraComponent.h"
+#include "Core/HealthComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -20,6 +21,7 @@ APJPlayer::APJPlayer()
 
 	Boom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 	Camera->SetupAttachment(Boom, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
 	Boom->SetupAttachment(RootComponent);
