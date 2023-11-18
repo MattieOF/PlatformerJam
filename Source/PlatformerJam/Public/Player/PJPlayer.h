@@ -14,18 +14,38 @@ class UCameraComponent;
 class USpringArmComponent;
 class UInputAction;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFailDash);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSuccessfulDash, FVector, Direction);
+
+UENUM(BlueprintType)
+enum class EDashDirection : uint8
+{
+	Camera    UMETA(DisplayName = "Camera"),
+	Movement  UMETA(DisplayName = "Movement")
+};
+
 UCLASS()
 class PLATFORMERJAM_API APJPlayer : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Move Speed")
 	float BaseMoveSpeed = 200;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Move Speed")
 	float AimingMoveSpeedMultiplier = 0.3f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Move Speed")
 	float MoveSpeedMultiplier = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Dash")
+	float DashChargeSpeed = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Dash")
+	float DashStrength = 300;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Dash")
+	float DashFloatTime = 0.4f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Dash")
+	bool bRechargeDashInAir = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Dash")
+	EDashDirection DefaultDashDirection = EDashDirection::Movement;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	float HorizontalMouseSens = 200;
@@ -89,6 +109,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* JumpAction;
 	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* DashAction;
+	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* MouseLookAction;
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* SwitchSideAction;
@@ -96,14 +118,23 @@ protected:
 	UInputAction* AimAction;
 
 	void OnMove(const FInputActionValue& ActionValue);
+	void ClearMovementInput();
 	void OnJump();
 	void OnMouseLook(const FInputActionValue& ActionValue);
 	void OnSwitchSide();
 	void OnAim(const FInputActionValue& ActionValue);
+	void OnDash();
 
+	UPROPERTY(BlueprintReadOnly)
 	bool bCamOnLeft = false;
+	UPROPERTY(BlueprintReadOnly)
 	bool bIsAiming = false;
 
+	UPROPERTY(BlueprintReadOnly)
+	float DashCharge = 1;
+	UPROPERTY(BlueprintReadOnly)
+	float FloatingTime = 0;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	USpringArmComponent* Boom;
 
@@ -113,6 +144,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UHealthComponent* Health;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnFailDash OnFailDash;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnSuccessfulDash OnSuccessfulDash;
+	
 private:
 	FCTweenInstanceFloat* AimingTween;
+
+	FVector2D CurrentMovementInput;
 };

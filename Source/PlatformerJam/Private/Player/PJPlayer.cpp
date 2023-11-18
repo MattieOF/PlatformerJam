@@ -71,19 +71,24 @@ void APJPlayer::PossessedBy(AController* NewController)
 void APJPlayer::OnMove(const FInputActionValue& ActionValue)
 {
 	// Get and normalise movement input
-	FVector2D Input = ActionValue.Get<FVector2D>();
+	CurrentMovementInput = ActionValue.Get<FVector2D>();
 	// if (Input == FVector2D::ZeroVector) return; // Removed for now; func shouldn't be called if input is 0
-	Input = Input.GetSafeNormal();
+	CurrentMovementInput = CurrentMovementInput.GetSafeNormal();
 	
 	FRotator LookYaw = FRotator(0, GetControlRotation().Yaw, 0);
 
 	const float AimingSlowdownMultiplier = bIsAiming ? AimingMoveSpeedMultiplier : 1;
 	FVector LookDir = FRotationMatrix(LookYaw).GetUnitAxis(EAxis::X);
-	AddMovementInput(LookDir * (Input.X * (bInvertHorizontal ? -1 : 1)),
+	AddMovementInput(LookDir * (CurrentMovementInput.X * (bInvertHorizontal ? -1 : 1)),
 	                 BaseMoveSpeed * MoveSpeedMultiplier * AimingSlowdownMultiplier * GetWorld()->DeltaTimeSeconds, false);
 	LookDir = FRotationMatrix(LookYaw).GetUnitAxis(EAxis::Y);
-	AddMovementInput(LookDir * (Input.Y * (bInvertVertical ? -1 : 1)),
+	AddMovementInput(LookDir * (CurrentMovementInput.Y * (bInvertVertical ? -1 : 1)),
 					 BaseMoveSpeed * MoveSpeedMultiplier * AimingSlowdownMultiplier * GetWorld()->DeltaTimeSeconds, false);
+}
+
+void APJPlayer::ClearMovementInput()
+{
+	CurrentMovementInput = FVector2D::ZeroVector;
 }
 
 void APJPlayer::OnJump()
@@ -124,10 +129,48 @@ void APJPlayer::OnAim(const FInputActionValue& ActionValue)
 	bIsAiming = bIsButtonHeld;
 }
 
+void APJPlayer::OnDash()
+{
+	// Check we have enough charge
+	// If not, send a delegate so cosmetic things can happen
+	if (DashCharge < 1)
+	{
+		OnFailDash.Broadcast();
+		return;
+	}
+
+	// Perform the dash
+	FVector Dir;
+	const FRotator Rot = FRotator(0, GetControlRotation().Yaw, 0);
+	if (DefaultDashDirection == EDashDirection::Camera || CurrentMovementInput.IsZero())
+		Dir = Rot.Vector();
+	else
+		Dir = FRotationMatrix(Rot).TransformVector(FVector(CurrentMovementInput, 0));
+	GetCharacterMovement()->Velocity = Dir * DashStrength;
+	OnSuccessfulDash.Broadcast(Dir);
+
+	FloatingTime = DashFloatTime;
+	
+	// Reset dash charge to 0
+	DashCharge = 0;
+}
+
 // Called every frame
 void APJPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	// Regenerate dash
+	if (DashCharge < 1 && (bRechargeDashInAir || GetCharacterMovement()->IsMovingOnGround()))
+		DashCharge = FMath::Min(1, DashCharge + (DeltaTime * DashChargeSpeed));
+
+	if (FloatingTime > 0)
+	{
+		GetCharacterMovement()->GravityScale = 0;
+		FloatingTime = FMath::Max(0, FloatingTime - DeltaTime);
+	}
+	else
+		GetCharacterMovement()->GravityScale = 1;
 }
 
 // Called to bind functionality to input
@@ -139,9 +182,12 @@ void APJPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		EnhancedInputComponent->BindAction(MoveAction,       ETriggerEvent::Triggered, this, &APJPlayer::OnMove);
 		EnhancedInputComponent->BindAction(JumpAction,       ETriggerEvent::Triggered, this, &APJPlayer::OnJump);
+		EnhancedInputComponent->BindAction(DashAction,       ETriggerEvent::Triggered, this, &APJPlayer::OnDash);
 		EnhancedInputComponent->BindAction(MouseLookAction,  ETriggerEvent::Triggered, this, &APJPlayer::OnMouseLook);
 		EnhancedInputComponent->BindAction(SwitchSideAction, ETriggerEvent::Triggered, this, &APJPlayer::OnSwitchSide);
 		EnhancedInputComponent->BindAction(AimAction,        ETriggerEvent::Triggered, this, &APJPlayer::OnAim);
+		
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::None, this, &APJPlayer::ClearMovementInput);
 	}
 }
 
