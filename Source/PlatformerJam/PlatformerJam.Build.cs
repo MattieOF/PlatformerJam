@@ -8,7 +8,7 @@ public class PlatformerJam : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "FCTween" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "FCTween", "AIModule" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "EnhancedInput" });
 

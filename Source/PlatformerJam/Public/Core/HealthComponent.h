@@ -36,7 +36,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
 	UFUNCTION(BlueprintCallable)
-	void SetMaxHealth(float NewMaxHealth);
+	void SetMaxHealth(float NewMaxHealth, bool bClampHealth = true);
 
 	UFUNCTION(BlueprintCallable)
 	void Damage(float Amount);

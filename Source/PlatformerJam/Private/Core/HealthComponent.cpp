@@ -48,9 +48,16 @@ void UHealthComponent::SetHealth(float NewHealth)
 	OnHealthChanged.Broadcast(NewHealth);
 }
 
-void UHealthComponent::SetMaxHealth(float NewMaxHealth)
+void UHealthComponent::SetMaxHealth(float NewMaxHealth, bool bClampHealth)
 {
 	MaxHealth = NewMaxHealth;
+	if (bClampHealth)
+	{
+		if (bAllowNegative)
+			SetHealth(FMath::Min(CurrentHealth, NewMaxHealth));
+		else
+			SetHealth(FMath::Clamp(CurrentHealth, 0, NewMaxHealth));
+	}
 }
 
 void UHealthComponent::Damage(float Amount)
