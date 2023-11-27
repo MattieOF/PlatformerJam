@@ -11,6 +11,9 @@ public class PlatformerJam : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "FCTween", "AIModule" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "EnhancedInput" });
+		
+		if (Target.bBuildEditor)
+			PublicDependencyModuleNames.Add("MessageLog");
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

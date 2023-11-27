@@ -6,6 +6,11 @@
 #include "Factories/Factory.h"
 #include "AssetFactories.generated.h"
 
+namespace FactoryStatics
+{
+	static FString GetAssetNameWithoutPrefix(FString Name);
+};
+
 UCLASS()
 class UEnemyDataFactory : public UFactory
 {

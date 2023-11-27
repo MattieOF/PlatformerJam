@@ -4,3 +4,9 @@
 
 #include "CoreMinimal.h"
 
+class FPlatformerJamModule: public IModuleInterface
+{
+public:
+	virtual void StartupModule() override;
+	virtual void ShutdownModule() override;
+};

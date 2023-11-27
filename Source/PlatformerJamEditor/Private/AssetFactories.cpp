@@ -5,6 +5,14 @@
 #include "Enemy/EnemyData.h"
 #include "Weapon/WeaponData.h"
 
+FString FactoryStatics::GetAssetNameWithoutPrefix(FString Name)
+{
+	TArray<FString> Sections;
+	const TCHAR Sep = '_';
+	Name.ParseIntoArray(Sections, &Sep);
+	return Sections.Last();
+}
+
 UEnemyDataFactory::UEnemyDataFactory()
 {
 	SupportedClass = UEnemyData::StaticClass();
@@ -16,7 +24,7 @@ UObject* UEnemyDataFactory::FactoryCreateNew(UClass* Class, UObject* InParent, F
 	UObject* Context, FFeedbackContext* Warn)
 {
 	auto EnemyData = NewObject<UEnemyData>(InParent, Class, Name, Flags, Context);
-	EnemyData->Name = FText::FromString(Name.ToString());
+	EnemyData->Name = FText::FromString(FactoryStatics::GetAssetNameWithoutPrefix(Name.ToString()));
 	return EnemyData;
 }
 
@@ -31,6 +39,6 @@ UObject* UWeaponDataFactory::FactoryCreateNew(UClass* Class, UObject* InParent, 
 	UObject* Context, FFeedbackContext* Warn)
 {
 	auto WeaponData = NewObject<UWeaponData>(InParent, Class, Name, Flags, Context);
-	WeaponData->Name = FText::FromString(Name.ToString());
+	WeaponData->Name = FText::FromString(FactoryStatics::GetAssetNameWithoutPrefix(Name.ToString()));
 	return WeaponData;
 }
