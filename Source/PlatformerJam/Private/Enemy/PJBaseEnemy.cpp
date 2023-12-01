@@ -24,7 +24,7 @@ void APJBaseEnemy::BeginPlay()
 		PJAI->SetEnemyData(Data);
 	} else
 	{
-		PJ_LOG_ERROR(FString::Printf("In AI %s with EnemyData %s, using non PJAIController!"), *GetName(), *Data->GetName());
+		PJ_LOG_ERROR(FString::Printf("In AI %s with EnemyData %s, using non PJAIController!", *GetName(), *Data->GetName()));
 	}
 	
 	if (Data->AnimationBlueprint.Get())
