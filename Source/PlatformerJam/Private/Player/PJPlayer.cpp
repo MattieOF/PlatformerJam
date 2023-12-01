@@ -41,6 +41,11 @@ APJPlayer::APJPlayer()
     AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
+void APJPlayer::SelectWeaponSlot(int Slot)
+{
+	PJ_LOG(FString::Printf(TEXT("Selected weapon slot %i"), Slot));
+}
+
 // Called when the game starts or when spawned
 void APJPlayer::BeginPlay()
 {
@@ -188,6 +193,12 @@ void APJPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(MouseLookAction,  ETriggerEvent::Triggered, this, &APJPlayer::OnMouseLook);
 		EnhancedInputComponent->BindAction(SwitchSideAction, ETriggerEvent::Triggered, this, &APJPlayer::OnSwitchSide);
 		EnhancedInputComponent->BindAction(AimAction,        ETriggerEvent::Triggered, this, &APJPlayer::OnAim);
+
+		// Bind weapon slot inputs
+		EnhancedInputComponent->BindAction(WeaponSlot1Action, ETriggerEvent::Triggered, this, &APJPlayer::SelectWeaponSlot, 1);
+		EnhancedInputComponent->BindAction(WeaponSlot2Action, ETriggerEvent::Triggered, this, &APJPlayer::SelectWeaponSlot, 2);
+		EnhancedInputComponent->BindAction(WeaponSlot3Action, ETriggerEvent::Triggered, this, &APJPlayer::SelectWeaponSlot, 3);
+		EnhancedInputComponent->BindAction(WeaponSlot4Action, ETriggerEvent::Triggered, this, &APJPlayer::SelectWeaponSlot, 4);
 		
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::None, this, &APJPlayer::ClearMovementInput);
 	}

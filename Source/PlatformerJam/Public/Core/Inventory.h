@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "Inventory.generated.h"
 
+class AWeapon;
 /**
  * Object that stores items and ammo for an actor
  */
@@ -31,5 +32,6 @@ public:
 	int UseAmountOrLess(FName Type, int DesiredAmount);
 
 private:
+	TMap<int, AWeapon*> Weapons;
 	TMap<FName, int> Ammo;
 };

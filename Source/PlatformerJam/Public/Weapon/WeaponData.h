@@ -39,5 +39,8 @@ public:
 	int MaxReserve = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
+	int Slot = 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
 	TSubclassOf<AWeapon> WeaponClass;
 };

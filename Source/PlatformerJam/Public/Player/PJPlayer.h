@@ -95,6 +95,9 @@ public:
 	{
 		return Cast<APJPlayer>(UGameplayStatics::GetPlayerPawn(WorldContextObject, 0));
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void SelectWeaponSlot(int Slot);
 	
 protected:
 	// Called when the game starts or when spawned
@@ -117,6 +120,15 @@ protected:
 	UInputAction* SwitchSideAction;
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* AimAction;
+	
+	UPROPERTY(EditAnywhere, Category = "Input|Weapon Slots")
+	UInputAction* WeaponSlot1Action;
+	UPROPERTY(EditAnywhere, Category = "Input|Weapon Slots")
+	UInputAction* WeaponSlot2Action;
+	UPROPERTY(EditAnywhere, Category = "Input|Weapon Slots")
+	UInputAction* WeaponSlot3Action;
+	UPROPERTY(EditAnywhere, Category = "Input|Weapon Slots")
+	UInputAction* WeaponSlot4Action;
 
 	void OnMove(const FInputActionValue& ActionValue);
 	void ClearMovementInput();
