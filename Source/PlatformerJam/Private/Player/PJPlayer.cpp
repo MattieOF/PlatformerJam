@@ -10,6 +10,7 @@
 #include "PlayerMappableInputConfig.h"
 #include "Camera/CameraComponent.h"
 #include "Core/HealthComponent.h"
+#include "Core/Inventory.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -19,6 +20,7 @@ APJPlayer::APJPlayer()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory")); 
 	Boom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));

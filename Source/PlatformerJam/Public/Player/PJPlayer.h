@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PJPlayer.generated.h"
 
+class UInventory;
 class UHealthComponent;
 class FCTweenInstanceFloat;
 struct FInputActionValue;
@@ -140,6 +141,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* Camera;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UInventory* Inventory;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UHealthComponent* Health;
