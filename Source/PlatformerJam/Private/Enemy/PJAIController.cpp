@@ -2,6 +2,8 @@
 
 #include "Enemy/PJAIController.h"
 
+#include "Enemy/EnemyData.h"
+
 // Sets default values
 APJAIController::APJAIController()
 {
@@ -13,7 +15,6 @@ APJAIController::APJAIController()
 void APJAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -22,3 +23,16 @@ void APJAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void APJAIController::SetEnemyData(UEnemyData* NewData)
+{
+	Data = NewData;
+	
+	if (Data->Blackboard && Data->BehaviorTree)
+	{
+		// Run BB and BT if it's set
+		auto BlackboardPointer = Blackboard.Get();
+		UseBlackboard(Data->Blackboard, BlackboardPointer);
+		Blackboard = BlackboardPointer;
+		RunBehaviorTree(Data->BehaviorTree);
+	}
+}

@@ -2,6 +2,7 @@
 
 #include "Enemy/PJBaseEnemy.h"
 
+#include "PJLog.h"
 #include "Enemy/EnemyData.h"
 
 APJBaseEnemy::APJBaseEnemy()
@@ -17,6 +18,14 @@ void APJBaseEnemy::BeginPlay()
 {
 	// Initialise components with data
 	AIControllerClass = Data->AIControllerClass;
+	SpawnDefaultController();
+	if (APJAIController* PJAI = Cast<APJAIController>(GetController()))
+	{
+		PJAI->SetEnemyData(Data);
+	} else
+	{
+		PJ_LOG_ERROR(FString::Printf("In AI %s with EnemyData %s, using non PJAIController!"), *GetName(), *Data->GetName());
+	}
 	
 	if (Data->AnimationBlueprint.Get())
 	{

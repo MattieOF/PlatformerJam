@@ -29,6 +29,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
 	TSubclassOf<APJAIController> AIControllerClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
+	UBlackboardData* Blackboard;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
+	UBehaviorTree* BehaviorTree;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation")
 	USkeletalMesh* DefaultMesh;
 
