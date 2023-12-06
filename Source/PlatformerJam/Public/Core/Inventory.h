@@ -7,6 +7,7 @@
 #include "Inventory.generated.h"
 
 class AWeapon;
+
 /**
  * Object that stores items and ammo for an actor
  */
@@ -30,6 +31,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 	int UseAmountOrLess(FName Type, int DesiredAmount);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Weapon")
+	AWeapon* GetWeaponInSlot(int Slot);
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void GiveWeapon(AWeapon* Weapon, int DefaultAmmo = -1);
 
 private:
 	TMap<int, AWeapon*> Weapons;

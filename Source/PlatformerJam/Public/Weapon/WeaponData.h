@@ -39,6 +39,12 @@ public:
 	int MaxReserve = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
+	bool bAutomatic = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
+	float FireSpeed = 0.05f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
 	int Slot = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")

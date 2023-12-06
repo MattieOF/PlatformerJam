@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PJPlayer.generated.h"
 
+class AWeapon;
 class UInventory;
 class UHealthComponent;
 class FCTweenInstanceFloat;
@@ -14,9 +15,6 @@ struct FInputActionValue;
 class UCameraComponent;
 class USpringArmComponent;
 class UInputAction;
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFailDash);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSuccessfulDash, FVector, Direction);
 
 UENUM(BlueprintType)
 enum class EDashDirection : uint8
@@ -29,6 +27,10 @@ UCLASS()
 class PLATFORMERJAM_API APJPlayer : public ACharacter
 {
 	GENERATED_BODY()
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFailDash);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSuccessfulDash, FVector, Direction);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFailedWeaponSelect, int, Slot);
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Move Speed")
@@ -89,6 +91,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Player")
 	FORCEINLINE bool IsAiming() const { return bIsAiming; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Weapon")
+	FORCEINLINE bool HasSelectedWeapon() const { return SelectedWeapon != nullptr; }
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (WorldContext = "WorldContextObject"), Category = "Player")
 	static FORCEINLINE APJPlayer* GetPlayer(UObject* WorldContextObject)
@@ -148,6 +153,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	float FloatingTime = 0;
 	
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
+	AWeapon* SelectedWeapon;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
+	int SelectedWeaponSlot = -1;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
 	USpringArmComponent* Boom;
 
@@ -165,6 +176,9 @@ protected:
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnSuccessfulDash OnSuccessfulDash;
+
+	UPROPERTY(BlueprintAssignable)
+	FFailedWeaponSelect OnFailedWeaponSelect;
 	
 private:
 	FCTweenInstanceFloat* AimingTween;

@@ -2,6 +2,9 @@
 
 #include "Core/Inventory.h"
 
+#include "Weapon/Weapon.h"
+#include "Weapon/WeaponData.h"
+
 int UInventory::GetAmmo(FName Type)
 {
 	if (Ammo.Contains(Type))
@@ -58,4 +61,22 @@ int UInventory::UseAmountOrLess(FName Type, int DesiredAmount)
 		Ammo.Remove(Type);
 	
 	return Used;
+}
+
+AWeapon* UInventory::GetWeaponInSlot(int Slot)
+{
+	if (Weapons.Contains(Slot))
+		return Weapons[Slot];
+	else return nullptr;
+}
+
+void UInventory::GiveWeapon(AWeapon* Weapon, int DefaultAmmo)
+{
+	if (!Weapons.Contains(Weapon->GetData()->Slot))
+		Weapons.Add(Weapon->GetData()->Slot, Weapon);
+
+	if (DefaultAmmo == -1)
+		AddAmmo(Weapon->GetData()->AmmoTypeKey, Weapon->GetData()->MaxClip);
+	else
+		AddAmmo(Weapon->GetData()->AmmoTypeKey, DefaultAmmo);
 }

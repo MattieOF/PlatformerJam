@@ -22,6 +22,8 @@ void AWeapon::BeginPlay()
 void AWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (FireCooldown > 0)
+		FireCooldown = FMath::Max(0, FireCooldown - DeltaTime);
 }
 
 void AWeapon::SetData(UWeaponData* NewData)
@@ -29,6 +31,8 @@ void AWeapon::SetData(UWeaponData* NewData)
 	Data = NewData;
 	if (ClipAmmo == -1)
 		ClipAmmo = Data->MaxClip;
+	if (Data->Mesh)
+		Mesh->SetStaticMesh(Data->Mesh);
 }
 
 void AWeapon::SetClipAmmo(int NewClip)
@@ -36,9 +40,24 @@ void AWeapon::SetClipAmmo(int NewClip)
 	ClipAmmo = NewClip;
 }
 
-void AWeapon::Fire()
+void AWeapon::Fire(const bool bHeld)
 {
-	UE_LOG(LogPJ, Error, TEXT("Base weapon fire function called by %s!"), *GetName());
+	PJ_LOG_ERROR(FString::Printf(TEXT("Base weapon fire function called by %s!"), *GetName()));
+}
+
+bool AWeapon::CanFire(const bool bHeld)
+{
+	return (!bHeld || Data->bAutomatic) && ClipAmmo > 0;
+}
+
+void AWeapon::Equip()
+{
+	Mesh->SetVisibility(true);	
+}
+
+void AWeapon::Unequip()
+{
+	Mesh->SetVisibility(false);	
 }
 
 AWeapon* AWeapon::SpawnWeapon(UWeaponData* Data, APJPlayer* Player, UObject* WorldContextObject, int SpawnClip)
