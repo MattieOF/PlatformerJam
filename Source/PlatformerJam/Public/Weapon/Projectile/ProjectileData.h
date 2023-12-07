@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "ProjectileData.generated.h"
 
+class AProjectile;
 /**
  * Class for storing basic details about a projectile.
  */
@@ -20,6 +21,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Appearance")
 	UStaticMesh* Mesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
+	TSubclassOf<AProjectile> ProjectileClass;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
 	float Speed = 1000;
