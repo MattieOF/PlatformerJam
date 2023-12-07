@@ -19,8 +19,14 @@ APJBaseEnemy::APJBaseEnemy()
 
 void APJBaseEnemy::BeginPlay()
 {
+	if (!Data)
+	{
+		PJ_LOG_ERROR(FString::Printf(TEXT("In enemy %s, null EnemyData! Destroying self."), *GetName()));
+		Destroy();
+		return;
+	}
+	
 	// Initialise components with data
-
 	// Init AI controller
 	AIControllerClass = Data->AIControllerClass;
 	if (Controller)
