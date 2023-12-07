@@ -2,6 +2,10 @@
 
 #include "Core/Inventory.h"
 
+#include "PJLog.h"
+#include "Weapon/Weapon.h"
+#include "Weapon/WeaponData.h"
+
 int UInventory::GetAmmo(FName Type)
 {
 	if (Ammo.Contains(Type))
@@ -58,4 +62,31 @@ int UInventory::UseAmountOrLess(FName Type, int DesiredAmount)
 		Ammo.Remove(Type);
 	
 	return Used;
+}
+
+AWeapon* UInventory::GetWeaponInSlot(const int Slot) const
+{
+	if (Weapons.Contains(Slot))
+		return Weapons[Slot];
+	return nullptr;
+}
+
+bool UInventory::GiveWeapon(AWeapon* Weapon, const int Ammo)
+{
+	if (!Weapon)
+	{
+		PJ_LOG_ERROR("Inventory attempted to receive null weapon!");
+		return false;
+	}
+
+	if (Ammo != 0)
+		AddAmmo(Weapon->GetData()->AmmoTypeKey, Ammo == -1 ? Weapon->GetData()->MaxClip : Ammo);
+	
+	if (!Weapons.Contains(Weapon->GetData()->Slot))
+	{
+		Weapons.Add(Weapon->GetData()->Slot, Weapon);
+		return true;
+	}
+
+	return false;
 }

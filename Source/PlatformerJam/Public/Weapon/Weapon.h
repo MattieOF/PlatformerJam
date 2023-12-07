@@ -22,6 +22,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetData(UWeaponData* NewData);
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE UWeaponData* GetData() const { return Data; }
+
 	UFUNCTION(BlueprintCallable)
 	void SetClipAmmo(int NewClip);
 

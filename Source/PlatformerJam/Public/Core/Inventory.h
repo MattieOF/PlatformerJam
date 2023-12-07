@@ -31,6 +31,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 	int UseAmountOrLess(FName Type, int DesiredAmount);
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Weapons")
+	FORCEINLINE bool HasWeaponInSlot(const int Slot) const { return Weapons.Contains(Slot); };
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Weapons")
+	AWeapon* GetWeaponInSlot(const int Slot) const;
+	
+	UFUNCTION(BlueprintCallable, Category = "Weapons")
+	bool GiveWeapon(AWeapon* Weapon, const int Ammo = -1);
+
 private:
 	TMap<int, AWeapon*> Weapons;
 	TMap<FName, int> Ammo;
