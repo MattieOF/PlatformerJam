@@ -63,6 +63,7 @@ void APJPlayer::BeginPlay()
 {
 	NormalGravity = GetCharacterMovement()->GravityScale;
 	NormalArmLength = Boom->TargetArmLength;
+	DefaultMeshRot = GetMesh()->GetRelativeRotation();
 	Super::BeginPlay();
 }
 
@@ -148,6 +149,8 @@ void APJPlayer::OnAim(const FInputActionValue& ActionValue)
 	// Set new state
 	bIsAiming = bIsButtonHeld;
 	GetCharacterMovement()->bOrientRotationToMovement = !bIsAiming;
+	if (!bIsAiming)
+		GetMesh()->SetRelativeRotation(DefaultMeshRot);
 }
 
 void APJPlayer::OnFire(bool bHeld)

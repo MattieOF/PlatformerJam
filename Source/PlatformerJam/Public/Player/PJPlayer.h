@@ -185,6 +185,8 @@ protected:
 	AWeapon* CurrentWeapon;
 	
 private:
+	FRotator DefaultMeshRot;
+	
 	float NormalGravity = 1;
 	
 	FCTweenInstanceFloat* AimingTween;
