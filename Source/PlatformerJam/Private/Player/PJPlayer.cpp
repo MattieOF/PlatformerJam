@@ -133,6 +133,7 @@ void APJPlayer::OnAim(const FInputActionValue& ActionValue)
 	                            [this](float ArmLength) { Boom->TargetArmLength = ArmLength; }, 0.3f, EFCEase::OutExpo);
 	
 	// Set new state
+	GetCharacterMovement()->bOrientRotationToMovement = !bIsAiming;
 	bIsAiming = bIsButtonHeld;
 }
 
@@ -178,6 +179,15 @@ void APJPlayer::Tick(float DeltaTime)
 	}
 	else
 		GetCharacterMovement()->GravityScale = 1;
+
+	if (bIsAiming)
+	{
+		FRotator Rot = Camera->GetComponentRotation();
+		Rot.Roll = 0;
+		Rot.Pitch = 0;
+		Rot.Yaw -= 90;
+		GetMesh()->SetWorldRotation(Rot);
+	}
 }
 
 // Called to bind functionality to input
