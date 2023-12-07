@@ -249,3 +249,16 @@ void APJPlayer::SetNormalArmLength(float NewLength)
 	if (!bIsAiming)
 		Boom->TargetArmLength = NewLength;
 }
+
+FVector APJPlayer::GetAimDirection() const
+{
+	FHitResult HitResult;
+	FCollisionQueryParams CollisionQueryParams;
+	CollisionQueryParams.bTraceComplex = true;
+	CollisionQueryParams.AddIgnoredActor(this);
+	FVector Start = Camera->GetComponentLocation();
+	FVector End = Start + Camera->GetForwardVector() * 1000;
+	const bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionQueryParams);
+	End = bHit ? HitResult.ImpactPoint : End;
+	return (End - Start).GetSafeNormal();
+}

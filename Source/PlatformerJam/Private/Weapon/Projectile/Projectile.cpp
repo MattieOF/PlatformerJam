@@ -32,6 +32,7 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	SetData(Data);
+	MeshComponent->SetRelativeRotation(Direction.Rotation());
 	MeshComponent->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 }
 

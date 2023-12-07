@@ -3,7 +3,9 @@
 #include "Weapon/ProjectileWeapon.h"
 
 #include "PJLog.h"
+#include "Player/PJPlayer.h"
 #include "Weapon/WeaponData.h"
+#include "Weapon/Projectile/Projectile.h"
 
 // Sets default values
 AProjectileWeapon::AProjectileWeapon()
@@ -17,7 +19,7 @@ void AProjectileWeapon::Fire(bool bHeld)
 	if (!CanFire(bHeld))
 		return;
 
-	UE_LOG(LogPJ, Log, TEXT("Fire!!"));
+	AProjectile::SpawnProjectile(this, ProjectileType, Mesh->GetSocketLocation("ProjectilePoint"), Player->GetAimDirection());
 
 	FiringCooldown = Data->FireCooldown;
 }
