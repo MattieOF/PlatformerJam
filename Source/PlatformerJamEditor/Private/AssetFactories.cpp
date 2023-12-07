@@ -4,6 +4,7 @@
 
 #include "Enemy/EnemyData.h"
 #include "Weapon/WeaponData.h"
+#include "Weapon/Projectile/ProjectileData.h"
 
 FString FactoryStatics::GetAssetNameWithoutPrefix(FString Name)
 {
@@ -41,4 +42,19 @@ UObject* UWeaponDataFactory::FactoryCreateNew(UClass* Class, UObject* InParent, 
 	auto WeaponData = NewObject<UWeaponData>(InParent, Class, Name, Flags, Context);
 	WeaponData->Name = FText::FromString(FactoryStatics::GetAssetNameWithoutPrefix(Name.ToString()));
 	return WeaponData;
+}
+
+UProjectileDataFactory::UProjectileDataFactory()
+{
+	SupportedClass = UProjectileData::StaticClass();
+	bEditAfterNew = true;
+	bCreateNew = true;
+}
+
+UObject* UProjectileDataFactory::FactoryCreateNew(UClass* Class, UObject* InParent, FName Name, EObjectFlags Flags,
+	UObject* Context, FFeedbackContext* Warn)
+{
+	auto ProjectileData = NewObject<UProjectileData>(InParent, Class, Name, Flags, Context);
+	ProjectileData->Name = FText::FromString(FactoryStatics::GetAssetNameWithoutPrefix(Name.ToString()));
+	return ProjectileData;
 }

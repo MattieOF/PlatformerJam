@@ -21,10 +21,11 @@ void FPlatformerJamEditorModule::StartupModule()
 	AssetTools.RegisterAssetTypeActions(EnemyDataAssetActions.ToSharedRef());
 	WeaponDataAssetActions = MakeShared<FWeaponDataAssetActions>();
 	AssetTools.RegisterAssetTypeActions(WeaponDataAssetActions.ToSharedRef());
+	ProjectileDataAssetActions = MakeShared<FProjectileDataAssetActions>();
+	AssetTools.RegisterAssetTypeActions(ProjectileDataAssetActions.ToSharedRef());
 }
 
 void FPlatformerJamEditorModule::ShutdownModule()
-{
-}
+{ }
 
 #undef LOCTEXT_NAMESPACE
