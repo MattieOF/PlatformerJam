@@ -49,6 +49,7 @@ void APJPlayer::SelectWeaponSlot(int Slot)
 // Called when the game starts or when spawned
 void APJPlayer::BeginPlay()
 {
+	NormalGravity = GetCharacterMovement()->GravityScale;
 	NormalArmLength = Boom->TargetArmLength;
 	Super::BeginPlay();
 }
@@ -133,8 +134,8 @@ void APJPlayer::OnAim(const FInputActionValue& ActionValue)
 	                            [this](float ArmLength) { Boom->TargetArmLength = ArmLength; }, 0.3f, EFCEase::OutExpo);
 	
 	// Set new state
-	GetCharacterMovement()->bOrientRotationToMovement = !bIsAiming;
 	bIsAiming = bIsButtonHeld;
+	GetCharacterMovement()->bOrientRotationToMovement = !bIsAiming;
 }
 
 void APJPlayer::OnDash()
@@ -178,7 +179,7 @@ void APJPlayer::Tick(float DeltaTime)
 		FloatingTime = FMath::Max(0, FloatingTime - DeltaTime);
 	}
 	else
-		GetCharacterMovement()->GravityScale = 1;
+		GetCharacterMovement()->GravityScale = NormalGravity;
 
 	if (bIsAiming)
 	{

@@ -167,6 +167,8 @@ protected:
 	FOnSuccessfulDash OnSuccessfulDash;
 	
 private:
+	float NormalGravity = 1;
+	
 	FCTweenInstanceFloat* AimingTween;
 
 	FVector2D CurrentMovementInput;
