@@ -22,11 +22,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Appearance")
 	UStaticMesh* Mesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Appearance")
+	FRotator RotationOffset;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
 	TSubclassOf<AProjectile> ProjectileClass;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
 	float Speed = 1000;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
+	float GravityScale = .1f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
 	float Damage = 10;

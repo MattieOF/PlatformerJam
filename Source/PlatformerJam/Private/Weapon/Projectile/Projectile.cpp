@@ -26,13 +26,15 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 		OnHitEnemy.Broadcast(Enemy, Hit.ImpactPoint, MovementComponent->Velocity.GetSafeNormal());
 	} else
 		OnHitElsewhere.Broadcast(OtherActor, Hit.ImpactPoint, MovementComponent->Velocity.GetSafeNormal());
+
+	Destroy();
 }
 
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	SetData(Data);
-	MeshComponent->SetRelativeRotation(Direction.Rotation());
+	MeshComponent->SetRelativeRotation(Direction.Rotation() + Data->RotationOffset);
 	MeshComponent->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 }
 
@@ -50,6 +52,7 @@ void AProjectile::SetData(UProjectileData* NewData)
 		MeshComponent->SetStaticMesh(Data->Mesh);
 
 	MovementComponent->Velocity = Direction * Data->Speed;
+	MovementComponent->ProjectileGravityScale = Data->GravityScale;
 }
 
 AProjectile* AProjectile::SpawnProjectile(UObject* WorldContextObject, UProjectileData* Data, FVector Position,

@@ -262,3 +262,16 @@ FVector APJPlayer::GetAimDirection() const
 	End = bHit ? HitResult.ImpactPoint : End;
 	return (End - Start).GetSafeNormal();
 }
+
+FVector APJPlayer::GetAimDirectionFromOrigin(FVector Origin) const
+{
+	FHitResult HitResult;
+	FCollisionQueryParams CollisionQueryParams;
+	CollisionQueryParams.bTraceComplex = true;
+	CollisionQueryParams.AddIgnoredActor(this);
+	FVector Start = Camera->GetComponentLocation();
+	FVector End = Start + Camera->GetForwardVector() * 1000;
+	const bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionQueryParams);
+	End = bHit ? HitResult.ImpactPoint : End;
+	return (End - Origin).GetSafeNormal();
+}

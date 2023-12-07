@@ -99,6 +99,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Player")
 	FVector GetAimDirection() const;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Player")
+	FVector GetAimDirectionFromOrigin(FVector Origin) const;
+
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (WorldContext = "WorldContextObject"), Category = "Player")
 	static FORCEINLINE APJPlayer* GetPlayer(UObject* WorldContextObject)
 	{

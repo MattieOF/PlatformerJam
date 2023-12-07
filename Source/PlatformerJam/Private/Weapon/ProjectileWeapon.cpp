@@ -19,7 +19,8 @@ void AProjectileWeapon::Fire(bool bHeld)
 	if (!CanFire(bHeld))
 		return;
 
-	AProjectile::SpawnProjectile(this, ProjectileType, Mesh->GetSocketLocation("ProjectilePoint"), Player->GetAimDirection());
+	FVector ProjPoint = Mesh->GetSocketLocation("ProjectilePoint");
+	AProjectile::SpawnProjectile(this, ProjectileType, ProjPoint, Player->GetAimDirectionFromOrigin(ProjPoint));
 
 	FiringCooldown = Data->FireCooldown;
 }
