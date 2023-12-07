@@ -149,6 +149,7 @@ void APJPlayer::OnAim(const FInputActionValue& ActionValue)
 	// Set new state
 	bIsAiming = bIsButtonHeld;
 	GetCharacterMovement()->bOrientRotationToMovement = !bIsAiming;
+	Boom->bEnableCameraLag = !bIsAiming;
 	if (!bIsAiming)
 		GetMesh()->SetRelativeRotation(DefaultMeshRot);
 }
