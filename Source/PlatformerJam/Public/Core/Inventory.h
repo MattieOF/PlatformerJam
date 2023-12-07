@@ -38,7 +38,7 @@ public:
 	AWeapon* GetWeaponInSlot(const int Slot) const;
 	
 	UFUNCTION(BlueprintCallable, Category = "Weapons")
-	bool GiveWeapon(AWeapon* Weapon, const int Ammo = -1);
+	bool GiveWeapon(AWeapon* Weapon);
 
 private:
 	TMap<int, AWeapon*> Weapons;

@@ -87,6 +87,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Camera")
 	FORCEINLINE UCameraComponent* GetCamera() const { return Camera; }
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Player")
+	FORCEINLINE UInventory* GetInventory() const { return Inventory; }
+
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void SetNormalArmLength(float NewLength);
 
@@ -123,6 +126,8 @@ protected:
 	UInputAction* SwitchSideAction;
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* AimAction;
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* FireAction;
 	
 	UPROPERTY(EditAnywhere, Category = "Input|Weapon Slots")
 	UInputAction* WeaponSlot1Action;
@@ -139,6 +144,7 @@ protected:
 	void OnMouseLook(const FInputActionValue& ActionValue);
 	void OnSwitchSide();
 	void OnAim(const FInputActionValue& ActionValue);
+	void OnFire(bool bHeld);
 	void OnDash();
 
 	UPROPERTY(BlueprintReadOnly)

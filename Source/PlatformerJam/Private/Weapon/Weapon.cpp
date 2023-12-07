@@ -22,6 +22,9 @@ void AWeapon::BeginPlay()
 void AWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (FiringCooldown > 0)
+		FiringCooldown = FMath::Max(0, FiringCooldown - DeltaTime);
 }
 
 void AWeapon::SetData(UWeaponData* NewData)
@@ -46,7 +49,12 @@ void AWeapon::Unequip()
 	Mesh->SetVisibility(false);
 }
 
-void AWeapon::Fire()
+bool AWeapon::CanFire(bool bHeld)
+{
+	return FiringCooldown <= 0 && (!bHeld || Data->bAutomatic) && ClipAmmo > 0;
+}
+
+void AWeapon::Fire(bool bHeld)
 {
 	UE_LOG(LogPJ, Error, TEXT("Base weapon fire function called by %s!"), *GetName());
 }

@@ -150,6 +150,16 @@ void APJPlayer::OnAim(const FInputActionValue& ActionValue)
 	GetCharacterMovement()->bOrientRotationToMovement = !bIsAiming;
 }
 
+void APJPlayer::OnFire(bool bHeld)
+{
+	if (!bIsAiming || !CurrentWeapon)
+		return;
+	
+	UE_LOG(LogPJ, Log, TEXT("Firing (held: %hs)"), bHeld ? "True" : "False");
+
+	CurrentWeapon->Fire(bHeld);
+}
+
 void APJPlayer::OnDash()
 {
 	// Check we have enough charge
@@ -216,6 +226,9 @@ void APJPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(MouseLookAction,  ETriggerEvent::Triggered, this, &APJPlayer::OnMouseLook);
 		EnhancedInputComponent->BindAction(SwitchSideAction, ETriggerEvent::Triggered, this, &APJPlayer::OnSwitchSide);
 		EnhancedInputComponent->BindAction(AimAction,        ETriggerEvent::Triggered, this, &APJPlayer::OnAim);
+		
+		EnhancedInputComponent->BindAction(FireAction,       ETriggerEvent::Started,   this, &APJPlayer::OnFire, false);
+		EnhancedInputComponent->BindAction(FireAction,       ETriggerEvent::Triggered, this, &APJPlayer::OnFire, true);
 
 		// Bind weapon slot inputs
 		EnhancedInputComponent->BindAction(WeaponSlot1Action, ETriggerEvent::Triggered, this, &APJPlayer::SelectWeaponSlot, 1);

@@ -20,7 +20,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	void SetData(UWeaponData* NewData);
+	virtual void SetData(UWeaponData* NewData);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE UWeaponData* GetData() const { return Data; }
@@ -32,13 +32,16 @@ public:
 	FORCEINLINE int GetClipAmmo() const { return ClipAmmo; }
 
 	UFUNCTION(BlueprintCallable)
-	void Equip();
+	virtual void Equip();
 
 	UFUNCTION(BlueprintCallable)
-	void Unequip();
+	virtual void Unequip();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	virtual bool CanFire(bool bHeld);
 	
 	UFUNCTION(BlueprintCallable)
-	void Fire();
+	virtual void Fire(bool bHeld);
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext = "WorldContextObject"))
 	static AWeapon* SpawnWeapon(UWeaponData* Data, APJPlayer* Player, UObject* WorldContextObject, int SpawnClip = -1);
@@ -57,4 +60,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int ClipAmmo = -1;
+
+	UPROPERTY(BlueprintReadWrite)
+	float FiringCooldown = 0;
 };

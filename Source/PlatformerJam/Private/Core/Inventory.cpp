@@ -71,7 +71,7 @@ AWeapon* UInventory::GetWeaponInSlot(const int Slot) const
 	return nullptr;
 }
 
-bool UInventory::GiveWeapon(AWeapon* Weapon, const int Ammo)
+bool UInventory::GiveWeapon(AWeapon* Weapon)
 {
 	if (!Weapon)
 	{
@@ -79,8 +79,7 @@ bool UInventory::GiveWeapon(AWeapon* Weapon, const int Ammo)
 		return false;
 	}
 
-	if (Ammo != 0)
-		AddAmmo(Weapon->GetData()->AmmoTypeKey, Ammo == -1 ? Weapon->GetData()->MaxClip : Ammo);
+	AddAmmo(Weapon->GetData()->AmmoTypeKey, Weapon->GetClipAmmo());
 	
 	if (!Weapons.Contains(Weapon->GetData()->Slot))
 	{
