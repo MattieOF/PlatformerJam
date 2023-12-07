@@ -3,7 +3,10 @@
 #include "Enemy/PJBaseEnemy.h"
 
 #include "PJLog.h"
+
 #include "Enemy/EnemyData.h"
+#include "Enemy/PJAIController.h"
+#include "Enemy/PJEnemyAnimInstance.h"
 
 APJBaseEnemy::APJBaseEnemy()
 {
@@ -33,6 +36,11 @@ void APJBaseEnemy::BeginPlay()
 	} else
 	{
 		PJ_LOG_ERROR(FString::Printf(TEXT("In AI %s with EnemyData %s, using non PJAIController!"), *GetName(), *Data->GetName()));
+	}
+
+	if (Data->DefaultMesh)
+	{
+		GetMesh()->SetSkeletalMesh(Data->DefaultMesh);
 	}
 	
 	if (Data->AnimationBlueprint.Get())

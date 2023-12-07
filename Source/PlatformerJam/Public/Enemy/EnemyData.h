@@ -4,12 +4,14 @@
 
 #include "CoreMinimal.h"
 
-#include "PJEnemyAnimInstance.h"
-#include "PJAIController.h" // I don't like having to include these here; feels like a circ dependency waiting to happen.
-							// However, TSubclassOf needs to have the definitions included to work.
-
 #include "Engine/DataAsset.h"
 #include "EnemyData.generated.h"
+
+class UBlackboardData;
+class UBehaviorTree;
+class UPJEnemyAnimInstance;
+class APJAIController;
+class APJBaseEnemy;
 
 /**
  * Data for an enemy
@@ -25,6 +27,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Data")
 	float MaxHP = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
+	TSubclassOf<APJBaseEnemy> EnemyClass;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
 	TSubclassOf<APJAIController> AIControllerClass;
