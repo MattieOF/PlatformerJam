@@ -22,6 +22,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Appearance")
 	UStaticMesh* Mesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Appearance")
+	FVector HeldOffset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Appearance")
+	FRotator HeldOffsetRot;
+	
 	// Key used to identify which type of ammo this weapon uses. "None" means it's own, unique, and unnamed type.
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ammo")
 	FName AmmoTypeKey = "None";

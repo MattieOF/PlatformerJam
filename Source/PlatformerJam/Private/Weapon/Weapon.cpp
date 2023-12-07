@@ -9,6 +9,8 @@
 AWeapon::AWeapon()
 {
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RootComponent = Mesh;
 	
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -30,6 +32,7 @@ void AWeapon::Tick(float DeltaTime)
 void AWeapon::SetData(UWeaponData* NewData)
 {
 	Data = NewData;
+	Mesh->SetStaticMesh(Data->Mesh);
 	if (ClipAmmo == -1)
 		ClipAmmo = Data->MaxClip;
 }
@@ -41,6 +44,9 @@ void AWeapon::SetClipAmmo(int NewClip)
 
 void AWeapon::Equip()
 {
+	Mesh->AttachToComponent(Player->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "WeaponHandSocket");
+	Mesh->SetRelativeLocation(Data->HeldOffset);
+	Mesh->SetRelativeRotation(Data->HeldOffsetRot);
 	Mesh->SetVisibility(true);
 }
 
