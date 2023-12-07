@@ -17,8 +17,16 @@ APJBaseEnemy::APJBaseEnemy()
 void APJBaseEnemy::BeginPlay()
 {
 	// Initialise components with data
+
+	// Init AI controller
 	AIControllerClass = Data->AIControllerClass;
+	if (Controller)
+	{
+		Controller->Destroy();
+		Controller = nullptr;
+	}
 	SpawnDefaultController();
+
 	if (APJAIController* PJAI = Cast<APJAIController>(GetController()))
 	{
 		PJAI->SetEnemyData(Data);
