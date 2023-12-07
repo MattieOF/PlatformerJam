@@ -7,6 +7,7 @@
 #include "Engine/DataAsset.h"
 #include "EnemyData.generated.h"
 
+class AGibs;
 class UBlackboardData;
 class UBehaviorTree;
 class UPJEnemyAnimInstance;
@@ -45,4 +46,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation")
 	TSubclassOf<UPJEnemyAnimInstance> AnimationBlueprint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation")
+	TSubclassOf<AGibs> GibsClass;
 };

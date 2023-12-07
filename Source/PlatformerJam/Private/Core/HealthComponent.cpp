@@ -43,7 +43,11 @@ void UHealthComponent::SetHealth(float NewHealth)
 	if (Difference > 0)
 		OnHealed.Broadcast(NewHealth, Difference);
 	else if (Difference < 0)
+	{
 		OnHurt.Broadcast(NewHealth, FMath::Abs(Difference));
+		if (CurrentHealth <= 0)
+			OnDeath.Broadcast();
+	}
 	
 	OnHealthChanged.Broadcast(NewHealth);
 }

@@ -28,6 +28,9 @@ public:
 	FORCEINLINE void Hurt(float Amount) { HealthComponent->Damage(Amount); }
 
 protected:
+	UFUNCTION()
+	void OnDeath();
+	
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

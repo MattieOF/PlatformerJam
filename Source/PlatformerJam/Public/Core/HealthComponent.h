@@ -9,6 +9,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealed, float, NewHealth, float, HealAmount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHurt, float, NewHealth, float, HurtAmount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 
 UCLASS(ClassGroup=(PJ), meta=(BlueprintSpawnableComponent))
 class PLATFORMERJAM_API UHealthComponent : public UActorComponent
@@ -52,6 +53,8 @@ public:
 	FOnHealed OnHealed;
 	UPROPERTY(BlueprintAssignable)
 	FOnHurt OnHurt;
+	UPROPERTY(BlueprintAssignable)
+	FOnDeath OnDeath;
 	
 protected:
 	virtual void BeginPlay() override;

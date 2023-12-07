@@ -158,8 +158,6 @@ void APJPlayer::OnFire(bool bHeld)
 	if (!bIsAiming || !CurrentWeapon)
 		return;
 	
-	UE_LOG(LogPJ, Log, TEXT("Firing (held: %hs)"), bHeld ? "True" : "False");
-
 	CurrentWeapon->Fire(bHeld);
 }
 
@@ -258,7 +256,7 @@ FVector APJPlayer::GetAimDirection() const
 	CollisionQueryParams.AddIgnoredActor(this);
 	FVector Start = Camera->GetComponentLocation();
 	FVector End = Start + Camera->GetForwardVector() * 1000;
-	const bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionQueryParams);
+	const bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_GameTraceChannel2, CollisionQueryParams);
 	End = bHit ? HitResult.ImpactPoint : End;
 	return (End - Start).GetSafeNormal();
 }

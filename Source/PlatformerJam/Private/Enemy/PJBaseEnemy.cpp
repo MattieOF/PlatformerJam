@@ -5,6 +5,7 @@
 #include "PJLog.h"
 
 #include "Enemy/EnemyData.h"
+#include "Enemy/Gibs.h"
 #include "Enemy/PJAIController.h"
 #include "Enemy/PJEnemyAnimInstance.h"
 
@@ -15,6 +16,13 @@ APJBaseEnemy::APJBaseEnemy()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+}
+
+void APJBaseEnemy::OnDeath()
+{
+	const FTransform TF = GetActorTransform();
+	GetWorld()->SpawnActor(Data->GibsClass, &TF);
+	Destroy();
 }
 
 void APJBaseEnemy::BeginPlay()
@@ -56,6 +64,7 @@ void APJBaseEnemy::BeginPlay()
 	}
 	
 	HealthComponent->SetMaxHealth(Data->MaxHP);
+	HealthComponent->OnDeath.AddDynamic(this, &APJBaseEnemy::OnDeath);
 	
 	Super::BeginPlay();
 }
