@@ -11,6 +11,7 @@
 #include "Camera/CameraComponent.h"
 #include "Core/HealthComponent.h"
 #include "Core/Inventory.h"
+#include "Enemy/PJBaseEnemy.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Weapon/Weapon.h"
@@ -213,6 +214,21 @@ void APJPlayer::Tick(float DeltaTime)
 		Rot.Yaw -= 90;
 		GetMesh()->SetWorldRotation(Rot);
 	}
+
+	// Find targeted enemy
+	FVector Start = Camera->GetComponentLocation();
+	FVector End = Start + (Camera->GetForwardVector() * 3000);
+	FHitResult Hit;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	if (GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_GameTraceChannel2, Params))
+	{
+		if (APJBaseEnemy* Enemy = Cast<APJBaseEnemy>(Hit.GetActor()))
+			TargetedEnemy = Enemy;
+		else
+			TargetedEnemy = nullptr;
+	} else
+		TargetedEnemy = nullptr;
 }
 
 // Called to bind functionality to input

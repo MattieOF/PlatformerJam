@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PJPlayer.generated.h"
 
+class APJBaseEnemy;
 class AWeapon;
 class UInventory;
 class UHealthComponent;
@@ -189,6 +190,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	AWeapon* CurrentWeapon;
+
+	UPROPERTY(BlueprintReadOnly)
+	APJBaseEnemy* TargetedEnemy;
 	
 private:
 	FRotator DefaultMeshRot;

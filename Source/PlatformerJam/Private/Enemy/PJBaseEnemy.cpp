@@ -64,6 +64,7 @@ void APJBaseEnemy::BeginPlay()
 	}
 	
 	HealthComponent->SetMaxHealth(Data->MaxHP);
+	HealthComponent->SetHealth(Data->MaxHP);
 	HealthComponent->OnDeath.AddDynamic(this, &APJBaseEnemy::OnDeath);
 	
 	Super::BeginPlay();
