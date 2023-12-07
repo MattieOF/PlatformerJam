@@ -15,6 +15,7 @@ AProjectile::AProjectile()
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	MeshComponent->SetCollisionObjectType(ECC_GameTraceChannel1);
 	MeshComponent->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Ignore);
+	MeshComponent->SetCanEverAffectNavigation(false);
 	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Movement"));
 	RootComponent = MeshComponent;
 }
