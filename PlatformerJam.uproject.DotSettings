@@ -4,4 +4,5 @@
 	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=PJ/@EntryIndexedValue">PJ</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=lololol/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Overheal/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/UserDictionary/Words/=PJAI/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=PJAI/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Unequip/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

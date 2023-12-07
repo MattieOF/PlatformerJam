@@ -13,6 +13,7 @@
 #include "Core/Inventory.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Weapon/Weapon.h"
 
 // Sets default values
 APJPlayer::APJPlayer()
@@ -43,7 +44,14 @@ APJPlayer::APJPlayer()
 
 void APJPlayer::SelectWeaponSlot(int Slot)
 {
-	PJ_LOG(FString::Printf(TEXT("Selected weapon slot %i"), Slot));
+	if (AWeapon* Weapon = Inventory->GetWeaponInSlot(Slot))
+	{
+		if (CurrentWeapon)
+			CurrentWeapon->Unequip();
+
+		CurrentWeapon = Weapon;
+		CurrentWeapon->Equip();
+	}
 }
 
 // Called when the game starts or when spawned

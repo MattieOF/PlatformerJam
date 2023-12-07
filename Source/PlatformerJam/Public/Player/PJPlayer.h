@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PJPlayer.generated.h"
 
+class AWeapon;
 class UInventory;
 class UHealthComponent;
 class FCTweenInstanceFloat;
@@ -165,6 +166,9 @@ protected:
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnSuccessfulDash OnSuccessfulDash;
+
+	UPROPERTY(BlueprintReadOnly)
+	AWeapon* CurrentWeapon;
 	
 private:
 	float NormalGravity = 1;

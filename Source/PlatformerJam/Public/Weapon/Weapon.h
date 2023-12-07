@@ -32,6 +32,12 @@ public:
 	FORCEINLINE int GetClipAmmo() const { return ClipAmmo; }
 
 	UFUNCTION(BlueprintCallable)
+	void Equip();
+
+	UFUNCTION(BlueprintCallable)
+	void Unequip();
+	
+	UFUNCTION(BlueprintCallable)
 	void Fire();
 
 	UFUNCTION(BlueprintCallable, meta=(WorldContext = "WorldContextObject"))

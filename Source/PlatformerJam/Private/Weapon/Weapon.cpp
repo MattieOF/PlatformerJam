@@ -36,6 +36,16 @@ void AWeapon::SetClipAmmo(int NewClip)
 	ClipAmmo = NewClip;
 }
 
+void AWeapon::Equip()
+{
+	Mesh->SetVisibility(true);
+}
+
+void AWeapon::Unequip()
+{
+	Mesh->SetVisibility(false);
+}
+
 void AWeapon::Fire()
 {
 	UE_LOG(LogPJ, Error, TEXT("Base weapon fire function called by %s!"), *GetName());
