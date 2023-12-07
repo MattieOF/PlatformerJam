@@ -18,6 +18,8 @@ class UInputAction;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFailDash);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSuccessfulDash, FVector, Direction);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFailedToEquipWeapon, int, Slot);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEquipWeapon, AWeapon*, Weapon, int, Slot);
 
 UENUM(BlueprintType)
 enum class EDashDirection : uint8
@@ -166,6 +168,12 @@ protected:
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnSuccessfulDash OnSuccessfulDash;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnEquipWeapon OnEquipWeapon;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnFailedToEquipWeapon OnFailedToEquipWeapon;
 
 	UPROPERTY(BlueprintReadOnly)
 	AWeapon* CurrentWeapon;

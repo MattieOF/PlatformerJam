@@ -51,6 +51,10 @@ void APJPlayer::SelectWeaponSlot(int Slot)
 
 		CurrentWeapon = Weapon;
 		CurrentWeapon->Equip();
+		OnEquipWeapon.Broadcast(CurrentWeapon, Slot);
+	} else
+	{
+		OnFailedToEquipWeapon.Broadcast(Slot);
 	}
 }
 
