@@ -27,6 +27,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void Hurt(float Amount) { HealthComponent->Damage(Amount); }
 
+	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"))
+	static APJBaseEnemy* SpawnEnemy(UObject* WorldContextObject, UEnemyData* Data, FTransform Transform);
+
 protected:
 	virtual void BeginPlay() override;
 

@@ -11,6 +11,7 @@
 #include "Engine/DataAsset.h"
 #include "EnemyData.generated.h"
 
+class APJBaseEnemy;
 /**
  * Data for an enemy
  */
@@ -25,6 +26,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Data")
 	float MaxHP = 100;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
+	TSubclassOf<APJBaseEnemy> EnemyClass;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Functionality")
 	TSubclassOf<APJAIController> AIControllerClass;

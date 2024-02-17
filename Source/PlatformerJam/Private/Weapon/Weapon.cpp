@@ -29,6 +29,13 @@ void AWeapon::Tick(float DeltaTime)
 void AWeapon::SetData(UWeaponData* NewData)
 {
 	Data = NewData;
+
+	if (!Data)
+	{
+		PJ_LOG_ERROR(FString::Printf(TEXT("Null data in Weapon %s"), *GetName()));
+		return;
+	}
+	
 	if (ClipAmmo == -1)
 		ClipAmmo = Data->MaxClip;
 	if (Data->Mesh)

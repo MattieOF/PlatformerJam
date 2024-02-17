@@ -30,3 +30,13 @@ public:
 	UWeaponDataFactory();
 	virtual UObject* FactoryCreateNew(UClass* Class, UObject* InParent, FName Name, EObjectFlags Flags, UObject* Context, FFeedbackContext* Warn) override;
 };
+
+UCLASS()
+class UProjectileDataFactory : public UFactory
+{
+	GENERATED_BODY()
+	
+public:
+	UProjectileDataFactory();
+	virtual UObject* FactoryCreateNew(UClass* Class, UObject* InParent, FName Name, EObjectFlags Flags, UObject* Context, FFeedbackContext* Warn) override;
+};

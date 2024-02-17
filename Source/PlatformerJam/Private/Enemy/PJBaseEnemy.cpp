@@ -4,6 +4,7 @@
 
 #include "PJLog.h"
 #include "Enemy/EnemyData.h"
+#include "Kismet/GameplayStatics.h"
 
 APJBaseEnemy::APJBaseEnemy()
 {
@@ -14,11 +15,47 @@ APJBaseEnemy::APJBaseEnemy()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
+APJBaseEnemy* APJBaseEnemy::SpawnEnemy(UObject* WorldContextObject, UEnemyData* Data, FTransform Transform)
+{
+	if (!WorldContextObject)
+	{
+		PJ_LOG_ERROR("Attempted to spawn enemy with null world context object.");
+		return nullptr;	
+	}
+
+	if (!Data)
+	{
+		PJ_LOG_ERROR("Attempted to spawn enemy with null data object.");
+		return nullptr;
+	}
+	
+	UWorld* World = WorldContextObject->GetWorld();
+	
+	if (!World)
+	{
+		PJ_LOG_ERROR("Attempted to spawn enemy with invalid world context object.");
+		return nullptr;
+	}
+
+	APJBaseEnemy* Enemy = World->SpawnActorDeferred<APJBaseEnemy>(Data->EnemyClass, Transform);
+	Enemy->Data = Data;
+	UGameplayStatics::FinishSpawningActor(Enemy, Transform);
+
+	return Enemy;
+}
+
 void APJBaseEnemy::BeginPlay()
 {
 	// Initialise components with data
+	if (Controller)
+	{
+		Controller->Destroy();
+		Controller = nullptr;
+	}
+	
 	AIControllerClass = Data->AIControllerClass;
 	SpawnDefaultController();
+	
 	if (APJAIController* PJAI = Cast<APJAIController>(GetController()))
 	{
 		PJAI->SetEnemyData(Data);
@@ -26,6 +63,9 @@ void APJBaseEnemy::BeginPlay()
 	{
 		PJ_LOG_ERROR(FString::Printf(TEXT("In AI %s with EnemyData %s, using non PJAIController!"), *GetName(), *Data->GetName()));
 	}
+
+	if (Data->DefaultMesh)
+		GetMesh()->SetSkeletalMesh(Data->DefaultMesh);
 	
 	if (Data->AnimationBlueprint.Get())
 	{

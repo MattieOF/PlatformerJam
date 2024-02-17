@@ -13,6 +13,7 @@ public:
     virtual void StartupModule() override;
     virtual void ShutdownModule() override;
 	
-	TSharedPtr<FEnemyDataAssetActions>  EnemyDataAssetActions;
-	TSharedPtr<FWeaponDataAssetActions> WeaponDataAssetActions;
+	TSharedPtr<FEnemyDataAssetActions>      EnemyDataAssetActions;
+	TSharedPtr<FWeaponDataAssetActions>     WeaponDataAssetActions;
+	TSharedPtr<FProjectileDataAssetActions> ProjectileDataAssetActions;
 };

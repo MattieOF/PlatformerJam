@@ -21,6 +21,10 @@ void FPlatformerJamEditorModule::StartupModule()
 	AssetTools.RegisterAssetTypeActions(EnemyDataAssetActions.ToSharedRef());
 	WeaponDataAssetActions = MakeShared<FWeaponDataAssetActions>();
 	AssetTools.RegisterAssetTypeActions(WeaponDataAssetActions.ToSharedRef());
+	ProjectileDataAssetActions = MakeShared<FProjectileDataAssetActions>();
+	AssetTools.RegisterAssetTypeActions(ProjectileDataAssetActions.ToSharedRef());
+	
+	UE_LOG(LogPJEditor, Log, TEXT("Initialised PJEditor module"));
 }
 
 void FPlatformerJamEditorModule::ShutdownModule()

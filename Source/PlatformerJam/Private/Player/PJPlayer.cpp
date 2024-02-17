@@ -61,8 +61,9 @@ void APJPlayer::SelectWeaponSlot(int Slot)
 // Called when the game starts or when spawned
 void APJPlayer::BeginPlay()
 {
-	NormalArmLength = Boom->TargetArmLength;
 	Super::BeginPlay();
+	NormalArmLength = Boom->TargetArmLength;
+	GetCharacterMovement()->JumpZVelocity = JumpPower;
 }
 
 void APJPlayer::PossessedBy(AController* NewController)
@@ -112,6 +113,9 @@ void APJPlayer::ClearMovementInput()
 
 void APJPlayer::OnJump()
 {
+	GetCharacterMovement()->JumpZVelocity = JumpPower *
+		(GetCharacterMovement()->IsMovingOnGround() ? 1 : SecondJumpMultiplier);
+	
 	Jump();
 }
 
@@ -145,6 +149,7 @@ void APJPlayer::OnAim(const FInputActionValue& ActionValue)
 	                            [this](float ArmLength) { Boom->TargetArmLength = ArmLength; }, 0.3f, EFCEase::OutExpo);
 	
 	// Set new state
+	GetCharacterMovement()->bOrientRotationToMovement = !bIsAiming;
 	bIsAiming = bIsButtonHeld;
 }
 
@@ -190,6 +195,15 @@ void APJPlayer::Tick(float DeltaTime)
 	}
 	else
 		GetCharacterMovement()->GravityScale = 1;
+
+	if (bIsAiming)
+	{
+		FRotator Rot = Camera->GetComponentRotation();
+		Rot.Pitch = 0;
+		Rot.Roll = 0;
+		Rot.Yaw -= 90;
+		GetMesh()->SetWorldRotation(Rot);
+	}
 }
 
 // Called to bind functionality to input

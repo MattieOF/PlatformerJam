@@ -49,6 +49,10 @@ public:
 	bool bRechargeDashInAir = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Dash")
 	EDashDirection DefaultDashDirection = EDashDirection::Movement;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Jump")
+	float JumpPower = 600;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Jump")
+	float SecondJumpMultiplier = 1.6f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	float HorizontalMouseSens = 200;
